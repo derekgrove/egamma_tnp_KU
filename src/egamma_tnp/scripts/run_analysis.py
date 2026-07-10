@@ -117,7 +117,7 @@ def main():
 
         logger.info("Running using LPCCondorCluster")
         cluster = LPCCondorCluster(
-            ship_env=True,
+            ship_env=False,
             scheduler_options={"dashboard_address": args.dashboard_address},
             memory=args.memory,
             disk=args.disk,
@@ -225,7 +225,6 @@ def main():
     if args.executor is not None and (args.executor.startswith("tls://") or args.executor.startswith("tcp://") or args.executor.startswith("ucx://")):
         client = Client(args.executor)
         logger.info(f"Set up client {client}")
-
     logger.info(f"Calculating task graph for methods: {config['methods']} on workflow: {instance}")
     to_compute = runner_utils.run_methods(instance, config["methods"])
     to_compute = runner_utils.process_to_compute(to_compute, args.output, args.repartition_n_to_one, args.skip_report)
@@ -237,7 +236,7 @@ def main():
         logger.info(f"The necessary columns are:\n{necessary_columns}")
     logger.info("Computing the task graph")
     if client:
-        with performance_report(filename="/tmp/dask-report.html"):
+        with performance_report(filename="dask-report.html"):
             logger.info("The performance report will be saved in /tmp/dask-report.html")
             (futures,) = dask.persist(to_compute)
             progress(futures)

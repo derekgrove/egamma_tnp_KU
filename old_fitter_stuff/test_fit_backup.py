@@ -64,17 +64,6 @@ def double_voigtian(x, A, mu, sigma1, gamma1, sigma2, gamma2):
     voigt2 = A * voigt_profile(x - mu, sigma2, gamma2)
     return voigt1 + voigt2
 
-
-# def double_voigtian(x, A, mu, eta, sigma_L, gamma_L, sigma_R, gamma_R):
-#    def voigt_profile(x, mu, sigma, gamma):
-#        z = ((x - mu) + 1j * gamma) / (sigma * np.sqrt(2))
-#        return np.real(wofz(z)) / (sigma * np.sqrt(2 * np.pi))
-#    V_left = voigt_profile(x, mu, sigma_L, gamma_L)
-#    V_right = voigt_profile(x, mu, sigma_R, gamma_R)
-#    shape = A * (eta * V_left + (1 - eta) * V_right)
-#    return shape
-
-
 def double_gaussian(x, A, mu, sigma_1, sigma_2):
     def gaussian(x, mu, sigma):
         z = (x - mu) / sigma
@@ -86,16 +75,17 @@ def double_gaussian(x, A, mu, sigma_1, sigma_2):
 
 
 def phase_space(x, B, a, b, x_min, x_max):
-    delta = 1e-5  # or 1e-3 depending on bin resolution
-    safe_x = np.clip(x, x_min + delta, x_max - delta)
+    safe_x = np.clip(x, x_min, x_max)
     shape = (safe_x - x_min) ** a * (x_max - safe_x) ** b
     shape[(x <= x_min) | (x >= x_max)] = 0
     return B * shape
 
 
-def linear(x, B, C):
-    shape = B * (1 + C * x)
-    return shape
+def linear(x, b, C):
+    shape = b + C * x
+    B_1 = np.trapezoid(linear, x)
+    B = (1 / B_1) * (shape)
+    return B
 
 
 def exponential(x, B, C):
@@ -734,7 +724,7 @@ FIT_CONFIGS = {
             "sigma2": (2.11, 2.12, 2.13),
             "gamma2": (0.90, 0.91, 0.92),
             "B": (0.001, 1, np.inf),
-            "C": (-0.8, 0.1, 0.8),
+            "C": (-1, -0.5, 0),
         },
     },
     "dv_exp": {
