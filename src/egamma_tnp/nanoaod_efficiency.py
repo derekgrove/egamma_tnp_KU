@@ -154,6 +154,10 @@ class ElectronTagNProbeFromNanoAOD(BaseTagNProbe):
         events["Electron", "gold_ID"] = categories["gold_ID"]
         events["Electron", "ISO_ID"] = categories["ISO_ID"]
         events["Electron", "PROMPT_ISO_ID"] = categories["PROMPT_ISO_ID"]
+        # below are for extrapolation plots only
+        events["Electron", "gold_ID_extrap"] = categories["gold_ID_extrap"]
+        events["Electron", "ISO_ID_extrap"] = categories["ISO_ID_extrap"]
+        events["Electron", "PROMPT_ISO_ID_extrap"] = categories["PROMPT_ISO_ID_extrap"]
 
         
         if self.use_sc_eta:

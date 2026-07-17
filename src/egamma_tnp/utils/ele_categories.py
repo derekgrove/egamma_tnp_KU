@@ -256,6 +256,11 @@ def electron_categories(ele_obj):
             (masks["wp90"] & masks["high_pt"])
         )
     )
+    ## GOLD ID EXTRAP (use with extrap. binning, used to extrap. eff. for low pt's)
+    categories["gold_ID_extrap"] = (
+        categories["baselineps"] &
+        masks["tight_no_iso_hoe"]
+    )
 
     ## GOLD ISO + ID
     categories["ISO_ID"] = (
@@ -266,6 +271,13 @@ def electron_categories(ele_obj):
         )
     )
 
+    ## GOLD ISO + ID EXTRAP (use with extrap. binning, used to extrap. eff. for low pt's)
+    categories["ISO_ID_extrap"] = (
+        categories["baselineps"] &
+        (masks["tight_no_iso_hoe"] & masks["tight_pfRelIso"] & masks["tight_miniPFRelIso"])
+    )
+
+
     ## GOLD PROMPT and technically the final gold selection, all good cuts applied
     categories["PROMPT_ISO_ID"] = (
         categories["baselineps"] &
@@ -274,6 +286,13 @@ def electron_categories(ele_obj):
             (masks["tight_no_iso_hoe"] & masks["tight_pfRelIso"] & masks["tight_miniPFRelIso"] & masks["low_pt"]) |
             (masks["wp90"] & masks["high_pt"])
         )
+    )
+
+    ## GOLD PROMPT EXTRAP (use with extrap. binning, used to extrap. eff. for low pt's)
+    categories["PROMPT_ISO_ID_extrap"] = (
+        categories["baselineps"] &
+        masks["tight_sip3d"] &
+        (masks["tight_no_iso_hoe"] & masks["tight_pfRelIso"] & masks["tight_miniPFRelIso"] & masks["low_pt"])
     )
 
     # ## GOLD ISO
